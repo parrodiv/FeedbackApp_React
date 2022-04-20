@@ -1,8 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useContext } from 'react'
 import FeedbackItem from './FeedbackItem';
-import PropTypes from 'prop-types';
+import FeedbackContext from '../context/FeedbackContext';
 
-function FeedbackList({ feedback, handleDelete }) {
+function FeedbackList({ handleDelete }) {
+
+  const { feedback } = useContext(FeedbackContext)
+
   console.log(feedback);
   //l'array feedback incrementa al submit del form, dopo di che verrà fatto un map through al return di questa funzione, cosi che vedremo aggiungere il nuovo feedback nel ui
 
@@ -37,15 +41,6 @@ function FeedbackList({ feedback, handleDelete }) {
   // );
 }
 
-FeedbackList.propTypes = {
-  feedback: PropTypes.arrayOf(
-    //definiamo i vari proptypes all'interno degli oggetti contenuti nell'array
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      rating: PropTypes.number.isRequired,
-      text: PropTypes.string.isRequired,
-    })
-  ),
-};
+
 
 export default FeedbackList;
