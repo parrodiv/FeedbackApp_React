@@ -1,6 +1,6 @@
 import RatingSelect from './RatingSelect';
 import Card from './shared/Card';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Button from './shared/Button';
 import FeedbackContext from '../context/FeedbackContext';
 
@@ -10,7 +10,18 @@ function FeedbackForm() {
   const [isDisabled, setBtnDisable] = useState(true);
   const [message, setMessage] = useState('');
 
-  const {addFeedback} = useContext(FeedbackContext)
+  const {addFeedback, feedbackEdit} = useContext(FeedbackContext)
+
+  useEffect(() => {
+    if (feedbackEdit.edit === true){
+      setBtnDisable(false)
+      setText(feedbackEdit.item.text)
+      setRating(feedbackEdit.item.rating)
+    }
+  }, [feedbackEdit])
+  // se all'interno delle parentesi quadre non c'è niente le funzioni all'interno si avvieranno al loading della pagina
+
+  // se invece inseriamo un dato ad es un object, esso diventa una dipendenza e nel momento in cui quel dato viene modificato (ad es al click del pencil) le funzioni si avviano oltre che ad avviarsi anche al loading
 
   const handleText = (e) => {
     //destructuring object prendo il value dall'event object perchè se utilizzassi text come elemento di verifica avremmo che al primo input il text state sarebbe ancora vuoto essendo che l'assegnazione avviene al successivo render del component
