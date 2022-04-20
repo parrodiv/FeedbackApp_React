@@ -1,13 +1,16 @@
 import RatingSelect from './RatingSelect';
 import Card from './shared/Card';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Button from './shared/Button';
+import FeedbackContext from '../context/FeedbackContext';
 
-function FeedbackForm({ handleAdd }) {
+function FeedbackForm() {
   const [text, setText] = useState('');
   const [rating, setRating] = useState(10)
   const [isDisabled, setBtnDisable] = useState(true);
   const [message, setMessage] = useState('');
+
+  const {addFeedback} = useContext(FeedbackContext)
 
   const handleText = (e) => {
     //destructuring object prendo il value dall'event object perchè se utilizzassi text come elemento di verifica avremmo che al primo input il text state sarebbe ancora vuoto essendo che l'assegnazione avviene al successivo render del component
@@ -36,7 +39,7 @@ function FeedbackForm({ handleAdd }) {
         text,   //text: text
         rating
       }
-       handleAdd(newFeedback);
+       addFeedback(newFeedback);
 
        setText('')
     }

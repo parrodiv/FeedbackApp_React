@@ -1,8 +1,11 @@
 import { FaTimes } from 'react-icons/fa';  //FaTimes è una x e il path react-icons/fa porta a font awesome
 import PropTypes from 'prop-types';
 import Card from './shared/Card';
+import {useContext} from 'react'
+import  FeedbackContext  from '../context/FeedbackContext';
 
-function FeedbackItem({ item, handleDelete }) {
+function FeedbackItem({ item }) {
+  const {deleteFeedback} = useContext(FeedbackContext)
 
   return (
     // possiamo passare una prop per impostare una condizione sullo stile: conditional class or conditional style, usiamo reverse che passo nel Card.jsx
@@ -10,7 +13,7 @@ function FeedbackItem({ item, handleDelete }) {
     <Card reverse={false}>
       <div className="num-display">{item.rating}</div>
       {/* andiamo a prendere la prop handleDelete da FeedbackList che a sua volta gli viene passato da App.js e al parametro gli passiamo quello che ci serve. handleDelete contiene la funzione deleteFeedback  */}
-      <button onClick={() => handleDelete(item.id)} className="close">
+      <button onClick={() => deleteFeedback(item.id)} className="close">
         <FaTimes color="purple" />
       </button>
       <div className="text-display">{item.text}</div>
