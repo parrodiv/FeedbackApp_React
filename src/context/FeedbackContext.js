@@ -55,9 +55,10 @@ export const FeedbackProvider = ({ children }) => {
     setFeedback(
       feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
     );
-    // This ES6 syntax allows you to take two objects and make a single object out of them. Like a "merge".
-    //ALTERNATIVE 
-    //feedback.map(item => (item.id === id ? updItem : item))
+    // This ES6 syntax allows you to take two objects and make a single object out of them. Like a "merge".So spreading both item and updateItem, merges the two objects into one new object with any duplicate key value pairs from the second object overwriting the key value pairs in the first object.
+
+    //ALTERNATIVE
+    //feedback.map((item) => (item.id === id ? { ...updItem, id } : item)
 
     //reset feedbackEdit
     setFeedbackEdit({
@@ -73,6 +74,9 @@ export const FeedbackProvider = ({ children }) => {
       edit: true,
     });
   };
+  //Clicking on the pencil icon calls editFeedback which updates context state, after which React re renders the Context Provider and all of it's descendants. 
+  // So yes state is changed.
+  // Whenever React renders a function component it calls/invokes that function component again with new state available on this new render. So anything you declare or run inside your function will run again, just like a normal function. Function components are just functions.
 
   return (
     <FeedbackContext.Provider
