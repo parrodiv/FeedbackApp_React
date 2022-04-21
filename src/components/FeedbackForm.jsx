@@ -6,19 +6,20 @@ import FeedbackContext from '../context/FeedbackContext';
 
 function FeedbackForm() {
   const [text, setText] = useState('');
-  const [rating, setRating] = useState(10)
+  const [rating, setRating] = useState(10);
   const [isDisabled, setBtnDisable] = useState(true);
   const [message, setMessage] = useState('');
 
-  const {addFeedback, feedbackEdit} = useContext(FeedbackContext)
+  const { addFeedback, feedbackEdit, updateFeedback } =
+    useContext(FeedbackContext);
 
   useEffect(() => {
-    if (feedbackEdit.edit === true){
-      setBtnDisable(false)
-      setText(feedbackEdit.item.text)
-      setRating(feedbackEdit.item.rating)
+    if (feedbackEdit.edit === true) {
+      setBtnDisable(false);
+      setText(feedbackEdit.item.text);
+      setRating(feedbackEdit.item.rating);
     }
-  }, [feedbackEdit])
+  }, [feedbackEdit]);
   // se all'interno delle parentesi quadre non c'è niente le funzioni all'interno si avvieranno al loading della pagina
 
   // se invece inseriamo un dato ad es un object, esso diventa una dipendenza e nel momento in cui quel dato viene modificato (ad es al click del pencil) le funzioni si avviano oltre che ad avviarsi anche al loading
@@ -44,23 +45,28 @@ function FeedbackForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if(text.trim().length >= 10){
-      const newFeedback = {
-        text,   //text: text
-        rating
-      }
-       addFeedback(newFeedback);
 
-       setText('')
+    if (text.trim().length >= 10) {
+      const newFeedback = {
+        text, //text: text
+        rating,
+      };
+
+      if (feedbackEdit.edit === true) {
+        updateFeedback(feedbackEdit.item.id, newFeedback);
+      } else {
+        addFeedback(newFeedback); //edit false
+      }
+
+      setText('');
     }
-  }
+  };
 
   return (
     <Card>
       <form onSubmit={handleSubmit}>
         <h2>How would you rate your service with us?</h2>
-        <RatingSelect select={(rating) => setRating(rating)}/>
+        <RatingSelect select={(rating) => setRating(rating)} />
         <div className="input-group">
           <input
             onChange={handleText}

@@ -51,6 +51,21 @@ export const FeedbackProvider = ({ children }) => {
     }
   };
 
+  const updateFeedback = (id, updItem) => {
+    setFeedback(
+      feedback.map((item) => (item.id === id ? { ...item, ...updItem } : item))
+    );
+    // This ES6 syntax allows you to take two objects and make a single object out of them. Like a "merge".
+    //ALTERNATIVE 
+    //feedback.map(item => (item.id === id ? updItem : item))
+
+    //reset feedbackEdit
+    setFeedbackEdit({
+      item: {},
+      edit: false,
+    });
+  };
+
   // Set item to be updated
   const editFeedback = (item) => {
     setFeedbackEdit({
@@ -63,10 +78,11 @@ export const FeedbackProvider = ({ children }) => {
     <FeedbackContext.Provider
       value={{
         feedback, //feedback: feedback
+        feedbackEdit, //object
         deleteFeedback,
         addFeedback,
         editFeedback,
-        feedbackEdit //object
+        updateFeedback,
       }}
     >
       {children}
@@ -74,4 +90,4 @@ export const FeedbackProvider = ({ children }) => {
   );
 };
 
-export default FeedbackContext
+export default FeedbackContext;
