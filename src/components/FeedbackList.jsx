@@ -7,7 +7,6 @@ function FeedbackList() {
 
   const { feedback } = useContext(FeedbackContext)
 
-  console.log(feedback);
   //l'array feedback incrementa al submit del form, dopo di che verrà fatto un map through al return di questa funzione, cosi che vedremo aggiungere il nuovo feedback nel ui
 
   if (!feedback || feedback.length === 0) {

@@ -1,27 +1,12 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid'; //genera id
 
 const FeedbackContext = createContext();
 
-//STATE1
+
 export const FeedbackProvider = ({ children }) => {
-  const [feedback, setFeedback] = useState([
-    {
-      id: 1,
-      text: 'This is feedback item 1',
-      rating: 10,
-    },
-    {
-      id: 2,
-      text: 'This is feedback item 2',
-      rating: 9,
-    },
-    {
-      id: 3,
-      text: 'This is feedback item 3',
-      rating: 7,
-    },
-  ]);
+  //STATE1
+  const [feedback, setFeedback] = useState([]);
 
   //STATE2
   const [feedbackEdit, setFeedbackEdit] = useState({
@@ -29,6 +14,22 @@ export const FeedbackProvider = ({ children }) => {
     edit: false,
     //al click del pencil settiamo il feedbackEdit con l'oggetto che contiene id, text e rating e l'inseriamo nel item che ora è un oggetto vuoto, dopo di che imposteremo edit in true
   });
+
+  //al reload avvia la funzione all'interno
+  useEffect( () => {
+    fetchFeedback()
+  }, [])
+
+  //Fetch data from json-server
+  const fetchFeedback = async () => {
+    const response = await fetch(
+      'http://localhost:8080/feedback'
+    );
+    const data = await response.json()
+    
+    //setto la variabile feedback dello state
+    setFeedback(data)
+  }
 
   // Add feedback
   const addFeedback = (newFeedback) => {
@@ -74,7 +75,7 @@ export const FeedbackProvider = ({ children }) => {
       edit: true,
     });
   };
-  //Clicking on the pencil icon calls editFeedback which updates context state, after which React re renders the Context Provider and all of it's descendants. 
+  //Clicking on the pencil icon calls editFeedback which updates context state, after which React re renders the Context Provider and all of it's descendants.
   // So yes state is changed.
   // Whenever React renders a function component it calls/invokes that function component again with new state available on this new render. So anything you declare or run inside your function will run again, just like a normal function. Function components are just functions.
 
