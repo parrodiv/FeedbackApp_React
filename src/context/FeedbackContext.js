@@ -7,13 +7,14 @@ const FeedbackContext = createContext();
 export const FeedbackProvider = ({ children }) => {
   //STATE1
   const [feedback, setFeedback] = useState([]);
-
   //STATE2
   const [feedbackEdit, setFeedbackEdit] = useState({
     item: {},
     edit: false,
     //al click del pencil settiamo il feedbackEdit con l'oggetto che contiene id, text e rating e l'inseriamo nel item che ora è un oggetto vuoto, dopo di che imposteremo edit in true
   });
+  //STATE3
+  const [isLoading, setIsLoading] = useState(true)
 
   //al reload avvia la funzione all'interno
   useEffect( () => {
@@ -29,6 +30,8 @@ export const FeedbackProvider = ({ children }) => {
     
     //setto la variabile feedback dello state
     setFeedback(data)
+    //setto isLoading in false, era settato su true e finche non viene chiamata questa funzione rimane su true e viene chiamata proprio al reload della pagina, quindi il loader appare solo nella fase di transizione tra il caricamento e il fetch del feedback
+    setIsLoading(false)
   }
 
   // Add feedback
@@ -84,6 +87,7 @@ export const FeedbackProvider = ({ children }) => {
       value={{
         feedback, //feedback: feedback
         feedbackEdit, //object
+        isLoading,
         deleteFeedback,
         addFeedback,
         editFeedback,

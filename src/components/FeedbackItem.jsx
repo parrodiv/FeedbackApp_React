@@ -9,7 +9,7 @@ function FeedbackItem({ item }) {
 
   return (
     // possiamo passare una prop per impostare una condizione sullo stile: conditional class or conditional style, usiamo reverse che passo nel Card.jsx
-    // il reverse false lo potremmo cancellare dato che l'abbiamo inserito come default in Card.jsx
+    // il reverse false lo potremmo cancellare dato che l'abbiamo inserito come props default in Card.jsx
     <Card reverse={false}>
       <div className="num-display">{item.rating}</div>
       {/* andiamo a prendere la prop handleDelete da FeedbackList che a sua volta gli viene passato da App.js e al parametro gli passiamo quello che ci serve. handleDelete contiene la funzione deleteFeedback  */}
