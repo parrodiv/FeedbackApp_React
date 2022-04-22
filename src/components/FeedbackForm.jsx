@@ -70,7 +70,7 @@ function FeedbackForm() {
         <div className="input-group">
           <input
             onChange={handleText}
-            value={text} //viene settato da setText
+            value={text} // text viene settato da setText
             type="text"
             placeholder="Write a review"
           />
