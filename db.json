@@ -14,6 +14,11 @@
       "id": 3,
       "rating": 10,
       "text": "This is feedback item 3 coming from the backend"
+    },
+    {
+      "text": "Prova addfeedback",
+      "rating": 3,
+      "id": 4
     }
   ]
 }

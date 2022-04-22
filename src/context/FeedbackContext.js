@@ -14,34 +14,46 @@ export const FeedbackProvider = ({ children }) => {
     //al click del pencil settiamo il feedbackEdit con l'oggetto che contiene id, text e rating e l'inseriamo nel item che ora è un oggetto vuoto, dopo di che imposteremo edit in true
   });
   //STATE3
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   //al reload avvia la funzione all'interno
-  useEffect( () => {
-    fetchFeedback()
-  }, [])
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
 
   //Fetch data from json-server
   const fetchFeedback = async () => {
     const response = await fetch(
-      'http://localhost:8080/feedback'
+      '/feedback?_sort=id&_order=desc'
+      //ordine decrescente in base al id
     );
-    const data = await response.json()
-    
+    const data = await response.json();
+
     //setto la variabile feedback dello state
-    setFeedback(data)
+    setFeedback(data);
     //setto isLoading in false, era settato su true e finche non viene chiamata questa funzione rimane su true e viene chiamata proprio al reload della pagina, quindi il loader appare solo nella fase di transizione tra il caricamento e il fetch del feedback
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   // Add feedback
-  const addFeedback = (newFeedback) => {
-    //aggiungo un id al nuovo object newFeedback
-    newFeedback.id = uuidv4();
+  const addFeedback = async (newFeedback) => {
+      const response = await fetch('/feedback',{
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(newFeedback)
+      })
+      // console.log(newFeedback); //no id
+
+      const data = await response.json()
+
+      // console.log(data); // yes id, automatically added from json-server
+
     //  const newArr = [newFeedback, ...feedback]
-    //con lo spread operator vengono copiati gli oggetti all'interno dell'array e incorporati al nuovo array
+    //con lo spread operator vengono copiati gli oggetti all'interno dell'array e incorporati al nuovo array [{...},{...},{...}]
     //sarebbe diverso da [newFeedback, feedback] darebbe [{newFeedback}, [feedback Array(n oggetti es (3))]]
-    setFeedback([newFeedback, ...feedback]);
+    setFeedback([data, ...feedback]);
   };
 
   // Delete feedback
@@ -54,6 +66,17 @@ export const FeedbackProvider = ({ children }) => {
       );
     }
   };
+
+  // Set item to be updated
+  const editFeedback = (item) => {
+    setFeedbackEdit({
+      item: item,
+      edit: true,
+    });
+  };
+  //Clicking on the pencil icon calls editFeedback which updates context state, after which React re renders the Context Provider and all of it's descendants.
+  // So yes state is changed.
+  // Whenever React renders a function component it calls/invokes that function component again with new state available on this new render. So anything you declare or run inside your function will run again, just like a normal function. Function components are just functions.
 
   const updateFeedback = (id, updItem) => {
     setFeedback(
@@ -70,17 +93,6 @@ export const FeedbackProvider = ({ children }) => {
       edit: false,
     });
   };
-
-  // Set item to be updated
-  const editFeedback = (item) => {
-    setFeedbackEdit({
-      item: item,
-      edit: true,
-    });
-  };
-  //Clicking on the pencil icon calls editFeedback which updates context state, after which React re renders the Context Provider and all of it's descendants.
-  // So yes state is changed.
-  // Whenever React renders a function component it calls/invokes that function component again with new state available on this new render. So anything you declare or run inside your function will run again, just like a normal function. Function components are just functions.
 
   return (
     <FeedbackContext.Provider
